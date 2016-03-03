@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var swig = require('swig');
 
 var routes = require('./modules/core/server/routes/index');
 var users = require('./modules/core/server/routes/users');
@@ -11,8 +12,14 @@ var users = require('./modules/core/server/routes/users');
 var app = express();
 
 // view engine setup
+
+app.engine('html', swig.renderFile);
 app.set('views', path.join(__dirname, '/modules/core/client/views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+app.set('view cache', false);
+swig.setDefaults({ cache: false });
+// console.log(path.join(__dirname, '/modules/core/client/views'));
+
 
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'html');
