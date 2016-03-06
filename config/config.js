@@ -1,8 +1,10 @@
 'use strict';
 
 var _ = require('lodash'),
-	glob = require('glob'),
-  	path = require('path');
+  chalk = require('chalk'),
+  glob = require('glob'),
+  fs = require('fs'),
+  path = require('path');
 
 var getGlobbedPaths = function (globPatterns, excludes) {
   // URL paths regex
@@ -98,8 +100,15 @@ var initGlobalConfig = function () {
   // Get the default assets
   var assets = require(path.join(process.cwd(), 'config/assets/default'));
 
-    // Get the default config
-  var config = require(path.join(process.cwd(), 'config/env/default'));
+
+  // Get the default config
+  var defaultConfig = require(path.join(process.cwd(), 'config/env/default'));
+
+  // Get the current config
+  var environmentConfig = require(path.join(process.cwd(), 'config/env/development.js')) || {};
+
+  // Merge config files
+  var config = _.merge(defaultConfig, environmentConfig);
 
   // read package.json for MEAN.JS project information
   var pkg = require(path.resolve('./package.json'));

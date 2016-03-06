@@ -9,10 +9,12 @@ var config = require('../config'),
   logger = require('./logger'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
+  MongoStore = require('connect-mongo')(session),
   favicon = require('serve-favicon'),
   compress = require('compression'),
   methodOverride = require('method-override'),
   cookieParser = require('cookie-parser'),
+  helmet = require('helmet'),
   flash = require('connect-flash'),
   consolidate = require('consolidate'),
   path = require('path');
@@ -96,11 +98,29 @@ module.exports.initViewEngine = function (app) {
 };
 
 /**
+ * Configure Helmet headers configuration
+ */
+module.exports.initHelmetHeaders = function (app) {
+  // Use helmet to secure Express headers
+  var SIX_MONTHS = 15778476000;
+  app.use(helmet.xframe());
+  app.use(helmet.xssFilter());
+  app.use(helmet.nosniff());
+  app.use(helmet.ienoopen());
+  app.use(helmet.hsts({
+    maxAge: SIX_MONTHS,
+    includeSubdomains: true,
+    force: true
+  }));
+  app.disable('x-powered-by');
+};
+
+/**
  * Invoke modules server configuration
  */
-module.exports.initModulesConfiguration = function (app) {
+module.exports.initModulesConfiguration = function (app, db) {
   config.files.server.configs.forEach(function (configPath) {
-    require(path.resolve(configPath))(app);
+    require(path.resolve(configPath))(app, db);
   });
 };
 
@@ -115,6 +135,29 @@ module.exports.initModulesClientRoutes = function (app) {
   config.folders.client.forEach(function (staticPath) {
     app.use(staticPath, express.static(path.resolve('./' + staticPath)));
   });
+};
+
+
+/**
+ * Configure Express session
+ */
+module.exports.initSession = function (app, db) {
+  // Express MongoDB session storage
+  app.use(session({
+    saveUninitialized: true,
+    resave: true,
+    secret: config.sessionSecret,
+    cookie: {
+      maxAge: config.sessionCookie.maxAge,
+      httpOnly: config.sessionCookie.httpOnly,
+      secure: config.sessionCookie.secure && config.secure.ssl
+    },
+    key: config.sessionKey,
+    store: new MongoStore({
+      mongooseConnection: db.connection,
+      collection: config.sessionCollection
+    })
+  }));
 };
 
 /**
@@ -159,9 +202,9 @@ module.exports.initErrorRoutes = function (app) {
 /**
  * Configure Socket.io
  */
-module.exports.configureSocketIO = function (app) {
+module.exports.configureSocketIO = function (app, db) {
   // Load the Socket.io configuration
-  var server = require('./socket.io')(app);
+  var server = require('./socket.io')(app, db);
 
   // Return server object
   return server;
@@ -170,7 +213,7 @@ module.exports.configureSocketIO = function (app) {
 /**
  * Initialize the Express application
  */
-module.exports.init = function () {
+module.exports.init = function (db) {
   // Initialize express app
   var app = express();
 
@@ -183,8 +226,14 @@ module.exports.init = function () {
   // Initialize Express view engine
   this.initViewEngine(app);
 
+  // Initialize Helmet security headers
+  this.initHelmetHeaders(app);
+
   // Initialize modules static client routes, before session!
   this.initModulesClientRoutes(app);
+
+  // Initialize Express session
+  this.initSession(app, db);
 
   // Initialize Modules configuration
   this.initModulesConfiguration(app);
@@ -199,7 +248,7 @@ module.exports.init = function () {
   this.initErrorRoutes(app);
 
   // Configure Socket.io
-  app = this.configureSocketIO(app);
+  app = this.configureSocketIO(app, db);
 
   return app;
 };
