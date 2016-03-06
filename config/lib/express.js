@@ -86,25 +86,21 @@ module.exports.initMiddleware = function (app) {
  */
 module.exports.initViewEngine = function (app) {
   // Set swig as the template engine
-  app.engine('html', consolidate[config.templateEngine]);
+  app.engine('server.view.html', consolidate[config.templateEngine]);
 
   // Set views path and view engine
-  app.set('views', path.join(__dirname, '../../modules/core/client/views'));
-  app.set('view engine', 'html');
+  app.set('view engine', 'server.view.html');
+  app.set('views', './');
+  // app.set('views', path.join(__dirname, '../../modules/core/client/views'));
   app.set('view cache', false);
-
-  var routes = require(path.join(__dirname, '../../modules/core/server/routes/index'));
-
-  app.use('/', routes);
-
 };
 
 /**
  * Invoke modules server configuration
  */
-module.exports.initModulesConfiguration = function (app, db) {
+module.exports.initModulesConfiguration = function (app) {
   config.files.server.configs.forEach(function (configPath) {
-    require(path.resolve(configPath))(app, db);
+    require(path.resolve(configPath))(app);
   });
 };
 
@@ -137,7 +133,7 @@ module.exports.initModulesServerPolicies = function (app) {
 module.exports.initModulesServerRoutes = function (app) {
   // Globbing routing files
   config.files.server.routes.forEach(function (routePath) {
-    require(path.resolve(routePath));
+    require(path.resolve(routePath))(app);
   });
 };
 
