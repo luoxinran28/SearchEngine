@@ -12,6 +12,7 @@
 		Menus.addMenuItem('topbar', {
 			title: 'Contact Us',
 			state: 'contact_us',
+			position: 3,
 			roles: ['*']
 		});
 	}

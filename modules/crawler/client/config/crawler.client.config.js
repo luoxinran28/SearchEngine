@@ -12,6 +12,7 @@
 		Menus.addMenuItem('topbar', {
 			title: 'Crawler',
 			state: 'crawler',
+			position: 2,
 			roles: ['*']
 		});
 	}

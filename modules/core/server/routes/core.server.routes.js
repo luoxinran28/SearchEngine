@@ -1,13 +1,9 @@
 'use strict';
 
 module.exports = function (app) {
-	/* GET home page. */
-	// app.route('/').get(function(req, res, next) {
-	//   res.render('home', { title: 'Express' });
-	// });
-
   // Root routing
   var core = require('../controllers/core.server.controller');
+  var search = require('../controllers/search.server.controller');
 
   // Define error pages
   app.route('/server-error').get(core.renderServerError);
@@ -17,6 +13,8 @@ module.exports = function (app) {
 
   // Define application route
   app.route('/*').get(core.renderIndex);
+
+  app.route('/').post(search.retrieve);
 
 
 };
