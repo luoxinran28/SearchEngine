@@ -9,11 +9,11 @@
 	menuConfig.$inject = ['Menus'];
 
 	function menuConfig(Menus) {
-		Menus.addMenuItem('topbar', {
-			title: 'Crawler',
-			state: 'crawler',
-			position: 2,
-			roles: ['*']
-		});
+		// Menus.addMenuItem('topbar', {
+		// 	title: 'Crawler',
+		// 	state: 'crawler',
+		// 	position: 2,
+		// 	roles: ['*']
+		// });
 	}
 })();
