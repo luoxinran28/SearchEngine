@@ -3,7 +3,7 @@
 
 
 	angular
-	.module('contact_us')
+	.module('contact')
 	.run(menuConfig);
 
 	menuConfig.$inject = ['Menus'];
@@ -11,7 +11,7 @@
 	function menuConfig(Menus) {
 		Menus.addMenuItem('topbar', {
 			title: 'Contact Us',
-			state: 'contact_us',
+			state: 'contact',
 			position: 3,
 			roles: ['*']
 		});
