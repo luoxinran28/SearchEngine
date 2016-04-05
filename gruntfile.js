@@ -121,8 +121,30 @@ module.exports = function(grunt) {
       options: {
         logConcurrentOutput: true
       }
-    }
-
+    },
+    mochaTest: {
+      src: testAssets.tests.server,
+      options: {
+        reporter: 'spec',
+        timeout: 10000
+      }
+    },
+    mocha_istanbul: {
+      coverage: {
+        src: testAssets.tests.server,
+        options: {
+          print: 'detail',
+          coverage: true,
+          require: 'test.js',
+          coverageFolder: 'coverage/server',
+          reportFormats: ['cobertura','lcovonly'],
+          check: {
+            lines: 40,
+            statements: 40
+          }
+        }
+      }
+    },
 
 
   });
@@ -150,6 +172,12 @@ module.exports = function(grunt) {
       done();
     });
   });
+
+
+  // Run the project tests
+  grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'server', 'mochaTest', 'karma:unit', 'protractor']);
+  grunt.registerTask('test:server', ['env:test', 'lint', 'server', 'mochaTest']);
+  grunt.registerTask('test:client', ['env:test', 'lint', 'karma:unit']);
 
   // Lint CSS and JavaScript files.
   grunt.registerTask('lint', ['sass', 'jshint']);
