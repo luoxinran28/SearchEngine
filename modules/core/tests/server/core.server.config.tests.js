@@ -61,7 +61,7 @@
  			});
  		});
 
-    it('should be good', function(done) {
+    it('should be great', function(done) {
       return done();
     });
 
