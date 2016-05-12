@@ -61,6 +61,10 @@
  			});
  		});
 
+    it('should be good', function(done) {
+      return done();
+    });
+
  		it('should have seedDB configuration set for "regular" user', function() {
  			(typeof userFromSeedConfig).should.not.equal('undefined');
  			should.exist(userFromSeedConfig.username);
