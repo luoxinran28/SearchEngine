@@ -227,7 +227,7 @@ module.exports.init = function (db) {
   this.initViewEngine(app);
 
   // Initialize Helmet security headers
-  this.initHelmetHeaders(app);
+  // this.initHelmetHeaders(app);
 
   // Initialize modules static client routes, before session!
   this.initModulesClientRoutes(app);

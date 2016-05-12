@@ -179,12 +179,12 @@ module.exports = function(grunt) {
 
 
   // Run the project tests
-  grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'server', 'mochaTest', 'karma:unit', 'protractor']);
+  grunt.registerTask('test', ['env:test', 'lint', 'mkdir:upload', 'server', 'mochaTest', 'karma:unit']);
   grunt.registerTask('test:server', ['env:test', 'lint', 'server', 'mochaTest']);
   grunt.registerTask('test:client', ['env:test', 'lint', 'karma:unit']);
 
   // Lint CSS and JavaScript files.
-  grunt.registerTask('lint', ['sass', 'jshint']);
+  grunt.registerTask('lint', ['jshint']);
 
   // Lint project files and minify them into two production files.
   grunt.registerTask('build', ['env:dev', 'lint', 'uglify', 'cssmin']);
