@@ -65,10 +65,10 @@
       return done();
     });
 
-    // it('should be wrong', function(done) {
-    //   false.should.be.true();
-    //   return done();
-    // });
+    it('should be wrong', function(done) {
+      false.should.be.true();
+      return done();
+    });
 
     it('should have seedDB configuration set for "regular" user', function() {
       (typeof userFromSeedConfig).should.not.equal('undefined');
