@@ -65,35 +65,40 @@
       return done();
     });
 
- 		it('should have seedDB configuration set for "regular" user', function() {
- 			(typeof userFromSeedConfig).should.not.equal('undefined');
- 			should.exist(userFromSeedConfig.username);
- 			should.exist(userFromSeedConfig.email);
- 		});
+    it('should be wrong', function(done) {
+      false.should.be.true();
+      return done();
+    });
 
- 		it('should have seedDB configuration set for admin user', function() {
- 			(typeof adminFromSeedConfig).should.not.equal('undefined');
- 			should.exist(adminFromSeedConfig.username);
- 			should.exist(adminFromSeedConfig.email);
- 		});
+    it('should have seedDB configuration set for "regular" user', function() {
+      (typeof userFromSeedConfig).should.not.equal('undefined');
+      should.exist(userFromSeedConfig.username);
+      should.exist(userFromSeedConfig.email);
+    });
 
- 		it('should not be an admin user to begin with', function(done) {
- 			User.find({ username: 'admin' }, function(err, users) {
- 				should.not.exist(err);
- 				users.should.be.instanceof(Array).and.have.lengthOf(0);
- 				return done();
- 			});
- 		});
+    it('should have seedDB configuration set for admin user', function() {
+      (typeof adminFromSeedConfig).should.not.equal('undefined');
+      should.exist(adminFromSeedConfig.username);
+      should.exist(adminFromSeedConfig.email);
+    });
 
- 		it('should not be a "regular" user to begin with', function(done) {
- 			User.find({ username: 'user' }, function(err, users) {
- 				should.not.exist(err);
- 				users.should.be.instanceof(Array).and.have.lengthOf(0);
- 				return done();
- 			});
- 		});
+    it('should not be an admin user to begin with', function(done) {
+      User.find({ username: 'admin' }, function(err, users) {
+       should.not.exist(err);
+       users.should.be.instanceof(Array).and.have.lengthOf(0);
+       return done();
+     });
+    });
 
- 		it('should seed ONLY the admin user account when NODE_ENV is set to "production"', function(done) {
+    it('should not be a "regular" user to begin with', function(done) {
+      User.find({ username: 'user' }, function(err, users) {
+       should.not.exist(err);
+       users.should.be.instanceof(Array).and.have.lengthOf(0);
+       return done();
+     });
+    });
+
+    it('should seed ONLY the admin user account when NODE_ENV is set to "production"', function(done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -128,7 +133,7 @@
       });
     });
 
- 		it('should seed admin, and "regular" user accounts when NODE_ENV is set to "test"', function(done) {
+    it('should seed admin, and "regular" user accounts when NODE_ENV is set to "test"', function(done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -172,7 +177,7 @@
       });
     });
 
- 		it('should seed admin, and "regular" user accounts when NODE_ENV is set to "test" when they already exist', function (done) {
+    it('should seed admin, and "regular" user accounts when NODE_ENV is set to "test" when they already exist', function (done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -216,7 +221,7 @@
       });
     });
 
- 		it('should ONLY seed admin user account when NODE_ENV is set to "production" with custom admin', function(done) {
+    it('should ONLY seed admin user account when NODE_ENV is set to "production" with custom admin', function(done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -251,7 +256,7 @@
       });
     });
 
- 		it('should seed admin, and "regular" user accounts when NODE_ENV is set to "test" with custom options', function(done) {
+    it('should seed admin, and "regular" user accounts when NODE_ENV is set to "test" with custom options', function(done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -295,7 +300,7 @@
       });
     });
 
- 		it('should NOT seed admin user account if it already exists when NODE_ENV is set to "production"', function(done) {
+    it('should NOT seed admin user account if it already exists when NODE_ENV is set to "production"', function(done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -339,7 +344,7 @@
       });
     });
 
- 		it('should NOT seed "regular" user account if missing email when NODE_ENV set to "test"', function (done) {
+    it('should NOT seed "regular" user account if missing email when NODE_ENV set to "test"', function (done) {
 
       // Save original value
       var nodeEnv = process.env.NODE_ENV;
@@ -376,7 +381,7 @@
           });
         });
     });
- 	});
+  });
 
 describe('Testing Session Secret Configuration', function () {
 	it('should warn if using default session secret when running in production', function (done) {

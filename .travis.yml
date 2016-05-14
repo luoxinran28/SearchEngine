@@ -11,4 +11,4 @@ install:
 before_script:
   - npm install -g grunt
 
-script: grunt test
+script: grunt test:server
