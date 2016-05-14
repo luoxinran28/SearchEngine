@@ -5,7 +5,10 @@ node_js:
 services:
   - mongodb
 
+install:
+  - npm install
+
 before_script:
   - npm install -g grunt
-  
-script: grunt test:server
+
+script: grunt test
